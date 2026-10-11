@@ -1,0 +1,205 @@
+{
+ "source": "https://cpcb.gov.in/water-quality-criteria/",
+ "sourceCsv": "cpcb_water_quality_criteria.csv",
+ "screeningClass": "B",
+ "classBParameterMap": {
+  "Dissolved oxygen": "CPCB-B-dissolved-oxygen",
+  "BOD": "CPCB-B-bod-5-days-20c",
+  "pH": "CPCB-B-ph"
+ },
+ "unmeasuredClassBParameters": [
+  "CPCB-B-total-coliform"
+ ],
+ "criteria": [
+  {
+   "id": "CPCB-A-total-coliform",
+   "csvLine": 2,
+   "class": "A",
+   "designatedBestUse": "Drinking water source without conventional treatment but after disinfection",
+   "parameter": "Total coliform",
+   "limitType": "max",
+   "limit": "50",
+   "unit": "MPN/100 ml"
+  },
+  {
+   "id": "CPCB-A-ph",
+   "csvLine": 3,
+   "class": "A",
+   "designatedBestUse": "Drinking water source without conventional treatment but after disinfection",
+   "parameter": "pH",
+   "limitType": "range",
+   "limit": "6.5-8.5",
+   "unit": null
+  },
+  {
+   "id": "CPCB-A-dissolved-oxygen",
+   "csvLine": 4,
+   "class": "A",
+   "designatedBestUse": "Drinking water source without conventional treatment but after disinfection",
+   "parameter": "Dissolved oxygen",
+   "limitType": "min",
+   "limit": "6",
+   "unit": "mg/l"
+  },
+  {
+   "id": "CPCB-A-bod-5-days-20c",
+   "csvLine": 5,
+   "class": "A",
+   "designatedBestUse": "Drinking water source without conventional treatment but after disinfection",
+   "parameter": "BOD (5 days 20C)",
+   "limitType": "max",
+   "limit": "2",
+   "unit": "mg/l"
+  },
+  {
+   "id": "CPCB-B-total-coliform",
+   "csvLine": 6,
+   "class": "B",
+   "designatedBestUse": "Outdoor bathing (organised)",
+   "parameter": "Total coliform",
+   "limitType": "max",
+   "limit": "500",
+   "unit": "MPN/100 ml"
+  },
+  {
+   "id": "CPCB-B-ph",
+   "csvLine": 7,
+   "class": "B",
+   "designatedBestUse": "Outdoor bathing (organised)",
+   "parameter": "pH",
+   "limitType": "range",
+   "limit": "6.5-8.5",
+   "unit": null
+  },
+  {
+   "id": "CPCB-B-dissolved-oxygen",
+   "csvLine": 8,
+   "class": "B",
+   "designatedBestUse": "Outdoor bathing (organised)",
+   "parameter": "Dissolved oxygen",
+   "limitType": "min",
+   "limit": "5",
+   "unit": "mg/l"
+  },
+  {
+   "id": "CPCB-B-bod-5-days-20c",
+   "csvLine": 9,
+   "class": "B",
+   "designatedBestUse": "Outdoor bathing (organised)",
+   "parameter": "BOD (5 days 20C)",
+   "limitType": "max",
+   "limit": "3",
+   "unit": "mg/l"
+  },
+  {
+   "id": "CPCB-C-total-coliform",
+   "csvLine": 10,
+   "class": "C",
+   "designatedBestUse": "Drinking water source after conventional treatment and disinfection",
+   "parameter": "Total coliform",
+   "limitType": "max",
+   "limit": "5000",
+   "unit": "MPN/100 ml"
+  },
+  {
+   "id": "CPCB-C-ph",
+   "csvLine": 11,
+   "class": "C",
+   "designatedBestUse": "Drinking water source after conventional treatment and disinfection",
+   "parameter": "pH",
+   "limitType": "range",
+   "limit": "6-9",
+   "unit": null
+  },
+  {
+   "id": "CPCB-C-dissolved-oxygen",
+   "csvLine": 12,
+   "class": "C",
+   "designatedBestUse": "Drinking water source after conventional treatment and disinfection",
+   "parameter": "Dissolved oxygen",
+   "limitType": "min",
+   "limit": "4",
+   "unit": "mg/l"
+  },
+  {
+   "id": "CPCB-C-bod-5-days-20c",
+   "csvLine": 13,
+   "class": "C",
+   "designatedBestUse": "Drinking water source after conventional treatment and disinfection",
+   "parameter": "BOD (5 days 20C)",
+   "limitType": "max",
+   "limit": "3",
+   "unit": "mg/l"
+  },
+  {
+   "id": "CPCB-D-ph",
+   "csvLine": 14,
+   "class": "D",
+   "designatedBestUse": "Propagation of wildlife and fisheries",
+   "parameter": "pH",
+   "limitType": "range",
+   "limit": "6.5-8.5",
+   "unit": null
+  },
+  {
+   "id": "CPCB-D-dissolved-oxygen",
+   "csvLine": 15,
+   "class": "D",
+   "designatedBestUse": "Propagation of wildlife and fisheries",
+   "parameter": "Dissolved oxygen",
+   "limitType": "min",
+   "limit": "4",
+   "unit": "mg/l"
+  },
+  {
+   "id": "CPCB-D-free-ammonia-as-n",
+   "csvLine": 16,
+   "class": "D",
+   "designatedBestUse": "Propagation of wildlife and fisheries",
+   "parameter": "Free ammonia (as N)",
+   "limitType": "max",
+   "limit": "1.2",
+   "unit": "mg/l"
+  },
+  {
+   "id": "CPCB-E-ph",
+   "csvLine": 17,
+   "class": "E",
+   "designatedBestUse": "Irrigation industrial cooling controlled waste disposal",
+   "parameter": "pH",
+   "limitType": "range",
+   "limit": "6.0-8.5",
+   "unit": null
+  },
+  {
+   "id": "CPCB-E-electrical-conductivity-at-25c",
+   "csvLine": 18,
+   "class": "E",
+   "designatedBestUse": "Irrigation industrial cooling controlled waste disposal",
+   "parameter": "Electrical conductivity at 25C",
+   "limitType": "max",
+   "limit": "2250",
+   "unit": "micromhos/cm"
+  },
+  {
+   "id": "CPCB-E-sodium-absorption-ratio",
+   "csvLine": 19,
+   "class": "E",
+   "designatedBestUse": "Irrigation industrial cooling controlled waste disposal",
+   "parameter": "Sodium absorption ratio",
+   "limitType": "max",
+   "limit": "26",
+   "unit": null
+  },
+  {
+   "id": "CPCB-E-boron",
+   "csvLine": 20,
+   "class": "E",
+   "designatedBestUse": "Irrigation industrial cooling controlled waste disposal",
+   "parameter": "Boron",
+   "limitType": "max",
+   "limit": "2",
+   "unit": "mg/l"
+  }
+ ]
+}

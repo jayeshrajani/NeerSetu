@@ -1,0 +1,30 @@
+{
+  "note": "Map anchors for the seven ghats. The MPPCB reports and the CSV contain NO coordinates. Every anchor below is an OpenStreetMap feature chosen by NAME or by the water body printed in the CSV; none is a surveyed ghat location. The app shows the basis next to every marker.",
+  "precision": {
+    "osm_named_feature": "OSM feature whose name matches the ghat (centroid). Closest available, still unverified on the ground.",
+    "locality": "OSM locality named in the printed site label. The kund is somewhere in this locality.",
+    "water_body": "Centroid of the water body named in the CSV. Only the lake is known, not the ghat.",
+    "name_match_only": "OSM place with a similar name. Weak: may not be the right place."
+  },
+  "sites": [
+    { "siteId": "bairagarh-sant-hirdaram-kund", "anchors": [{ "basis": "locality", "osm": "node/3748732480", "label": "Bairagarh (OSM suburb)", "waterBody": "upper-lake" }] },
+    { "siteId": "prempura-ghat", "anchors": [{ "basis": "osm_named_feature", "osm": "way/922790998", "label": "“prempura ghat” (OSM park)", "waterBody": "upper-lake" }] },
+    { "siteId": "khatlapura-ghat", "anchors": [{ "basis": "water_body", "osm": "way/28672430", "label": "Lower Lake (water body only)", "waterBody": "lower-lake" }] },
+    {
+      "siteId": "rani-kamlapati-kamla-park",
+      "anchors": [
+        { "basis": "name_match_only", "osm": "way/1002690457", "label": "Ganesh tables: Kamla Park kund — near OSM “Rani Kamlapati Mahal”", "waterBody": null },
+        { "basis": "water_body", "osm": "way/28672430", "label": "Durga tables: Rani Kamlapati ghat — Lower Lake (water body only)", "waterBody": "lower-lake" }
+      ]
+    },
+    { "siteId": "hathaikheda-dam-kund", "anchors": [{ "basis": "water_body", "osm": "way/28826931", "label": "“Hataikheda Dam” (OSM water body)", "waterBody": "hathaikheda-dam" }] },
+    { "siteId": "malikhedi-kund", "anchors": [{ "basis": "name_match_only", "osm": "node/11358718540", "label": "“Mali Khedi” (OSM village) — name match only", "waterBody": null }] },
+    { "siteId": "shahpura-lake-ghat", "anchors": [{ "basis": "water_body", "osm": "way/28672561", "label": "Shahpura Lake (water body only)", "waterBody": "shahpura-lake" }] }
+  ],
+  "waterBodies": [
+    { "id": "upper-lake", "osm": "relation/5414768", "name": "Upper Lake (Bhojtal)", "nameHi": "बड़ा तालाब" },
+    { "id": "lower-lake", "osm": "way/28672430", "name": "Lower Lake", "nameHi": "छोटा तालाब" },
+    { "id": "shahpura-lake", "osm": "way/28672561", "name": "Shahpura Lake", "nameHi": "शाहपुरा झील" },
+    { "id": "hathaikheda-dam", "osm": "way/28826931", "name": "Hathaikheda Dam", "nameHi": "हथाईखेड़ा डैम" }
+  ]
+}

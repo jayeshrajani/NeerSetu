@@ -1,0 +1,180 @@
+@import "tailwindcss";
+
+/* Token names kept from v1 so existing pages re-skin; values are the new palette. */
+@theme {
+  --color-ink-950: #0b0c0d;
+  --color-ink-900: #101213;
+  --color-ink-850: #141618;
+  --color-ink-800: #191c1e;
+  --color-ink-700: #23272a;
+  --color-ink-600: #30353a;
+  --color-fog-100: #ece9e2;
+  --color-fog-300: #bdb9b0;
+  --color-fog-500: #8b8880;
+  --color-fog-700: #5e5b55;
+  /* "tide" is now the paper-white action colour */
+  --color-tide-200: #ffffff;
+  --color-tide-300: #f3f1ea;
+  --color-tide-400: #e9e6df;
+  --color-tide-500: #cfcbc0;
+  --color-tide-700: #57534a;
+  --color-crit-300: #f2a08b;
+  --color-crit-400: #e76f51;
+  --color-crit-600: #a8432b;
+  --color-warn-300: #f0d48f;
+  --color-warn-400: #e9c46a;
+  --color-gap-300: #a9b4bb;
+  --color-gap-400: #8c9aa3;
+  --color-sage-400: #8fb8a8;
+  --color-marigold-400: #f4a93b;
+  --color-lake-500: #3d6670;
+
+  --font-display: "IBM Plex Sans", "IBM Plex Sans Devanagari", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "IBM Plex Sans", "IBM Plex Sans Devanagari", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-hindi: "IBM Plex Sans Devanagari", "IBM Plex Sans", sans-serif;
+
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-xl: 5px;
+  --radius-2xl: 6px;
+  --radius-3xl: 8px;
+
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  background: var(--color-ink-950);
+  color: var(--color-fog-100);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-sans);
+  min-height: 100dvh;
+  background: var(--color-ink-950);
+  overflow-x: hidden;
+}
+
+:lang(hi),
+.font-hindi {
+  font-family: var(--font-hindi);
+  line-height: 1.7;
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-fog-500);
+}
+
+/* v1 class kept for re-skin: now a flat surface with a hairline */
+.glass {
+  background: var(--color-ink-900);
+  border: 1px solid var(--color-ink-700);
+}
+
+.keyline {
+  border-color: var(--color-ink-700);
+}
+
+/* keep absolutely positioned sr-only cells inside scroll containers from widening the page */
+.overflow-x-auto {
+  position: relative;
+}
+
+.hatch {
+  background-image: repeating-linear-gradient(45deg, rgb(139 136 128 / 0.55) 0 1px, transparent 1px 4px);
+}
+
+a {
+  text-underline-offset: 3px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-marigold-400);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: rgb(244 169 59 / 0.35);
+}
+
+details > summary {
+  list-style: none;
+  cursor: pointer;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- print: brief only, light paper ---------- */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm 14mm 16mm;
+  }
+  :root {
+    color-scheme: light;
+  }
+  html,
+  body {
+    background: #fff !important;
+    color: #111 !important;
+  }
+  [data-noprint] {
+    display: none !important;
+  }
+  .print-sheet {
+    display: block !important;
+    color: #111;
+    font-size: 10.5pt;
+    line-height: 1.45;
+  }
+  .print-sheet * {
+    color: #111 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border-color: #bbb !important;
+  }
+  .print-break {
+    break-before: page;
+  }
+  .print-avoid {
+    break-inside: avoid;
+  }
+}

@@ -1,0 +1,65 @@
+{
+ "source": "OpenStreetMap via Overpass API (overpass-api.de), queried 2026-10-11; ODbL",
+ "elements": [
+  {
+   "type": "way",
+   "id": 922790998,
+   "tags": {
+    "leisure": "park",
+    "name": "prempura ghat"
+   },
+   "lat": 23.2175449,
+   "lon": 77.3752714
+  },
+  {
+   "type": "node",
+   "id": 3748732480,
+   "tags": {
+    "name": "Bairagarh",
+    "place": "suburb"
+   },
+   "lat": 23.2744574,
+   "lon": 77.336563
+  },
+  {
+   "type": "node",
+   "id": 11358718540,
+   "tags": {
+    "name": "Mali Khedi",
+    "place": "village"
+   },
+   "lat": 23.2062965,
+   "lon": 77.3038988
+  },
+  {
+   "type": "way",
+   "id": 1002690457,
+   "tags": {
+    "historic": "castle",
+    "name": "Rani Kamlapati Mahal"
+   },
+   "lat": 23.2509164,
+   "lon": 77.3978449
+  },
+  {
+   "type": "node",
+   "id": 3682297733,
+   "tags": {
+    "name": "Shahpura",
+    "place": "neighbourhood"
+   },
+   "lat": 23.1988318,
+   "lon": 77.4237838
+  },
+  {
+   "type": "node",
+   "id": 245712627,
+   "tags": {
+    "name": "Bhopal",
+    "place": "city"
+   },
+   "lat": 23.2584857,
+   "lon": 77.401989
+  }
+ ]
+}

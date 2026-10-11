@@ -1,0 +1,94 @@
+{
+ "sourcePackName": "Bhopal Impact Lab 2026 — Track 2 Visarjan Ghat Watch",
+ "sourceRepo": "https://github.com/Vishal4742/bhopal-impact-lab-2026-problem-statements",
+ "sourceCommit": "6b96823f27aaab18ce2f07dfc71a3732011bd4ab",
+ "sourcePath": "track-2-visarjan-ghat-watch",
+ "dataYearMin": 2023,
+ "dataYearMax": 2025,
+ "primaryRowCount": 1524,
+ "uniqueSiteCount": 7,
+ "sampleRowCount": 453,
+ "criteriaRowCount": 19,
+ "statewideRowCount": 21600,
+ "inputSha256": {
+  "bhopal_ghats_2023_2025.csv": "6068f686d2e78296ad7d165dd6762abf38fed3b908cdb94cd3b240d414329c6b",
+  "sample_bhopal_2025.csv": "9056c7f1a2f4bf2c19c6712e3807666929b3b6ff004939f22ff2ca8b54ef92b0",
+  "cpcb_water_quality_criteria.csv": "a60309520a0cf138f2fbfdd94fd2278c63218ae9f9cd55ce0f658d52194754ad",
+  "mp_immersion_sites_2023_2025.csv": "ae6df3c34decc03c31eb6643d11a4df0fe447217de05ce2c29be82d27411dfdf"
+ },
+ "generatedAt": "2026-10-11T09:07:42+00:00",
+ "methodologyVersion": "1.0.0",
+ "measurementStatusCounts": {
+  "numeric": 1289,
+  "below_detection_limit": 174,
+  "not_sampled": 61
+ },
+ "crossCheck": {
+  "doNumeric": 116,
+  "doBelow5": 42,
+  "doZero": 4,
+  "bodNumeric": 112,
+  "bodAbove3": 100,
+  "phNumeric": 115,
+  "phOutside6_5to8_5": 6
+ },
+ "sampleCheck": {
+  "rows": 453,
+  "headerMatchesPrimary": true,
+  "primary2025Rows": 453,
+  "sampleRowsNotInPrimary": 0,
+  "primary2025RowsNotInSample": 0,
+  "isSubset": true,
+  "identicalTo2025Primary": true
+ },
+ "absentWindows": [
+  {
+   "site": "Bairagarh (Sant Hirdaram) kund",
+   "siteId": "bairagarh-sant-hirdaram-kund",
+   "year": 2025,
+   "festival": "Durga"
+  },
+  {
+   "site": "Malikhedi kund",
+   "siteId": "malikhedi-kund",
+   "year": 2025,
+   "festival": "Durga"
+  }
+ ],
+ "pageVerification": {
+  "method": "pypdf text extraction; cited source_page read as 1-based PDF viewer page; parameter line matched by printed tokens",
+  "groupCounts": {
+   "exact": 507,
+   "loose": 1,
+   "not_found": 0,
+   "page_inconsistent": 0
+  },
+  "rowsWithVerifiedViewerPage": 1524,
+  "manualTablesChecked": 11
+ },
+ "reports": {
+  "2023": {
+   "file": "Idol_immer._Report_23_CPCB.pdf",
+   "title": "MPPCB Idol Immersion Report 2023 (CPCB format)",
+   "titleHi": "म.प्र. प्रदूषण नियंत्रण बोर्ड — मूर्ति विसर्जन रिपोर्ट 2023",
+   "url": "https://www.mppcb.mp.gov.in/proc/mon/Idol_immer._Report_23_CPCB.pdf",
+   "sha256": "24fd6751fd146fdf090a061434f0c537609bcaedb0c4da88c380910fbe683821"
+  },
+  "2024": {
+   "file": "Ganesh_and_Durga_visarjan_report-2024.pdf",
+   "title": "MPPCB Ganesh and Durga Visarjan Report 2024",
+   "titleHi": "म.प्र. प्रदूषण नियंत्रण बोर्ड — गणेश एवं दुर्गा विसर्जन रिपोर्ट 2024",
+   "url": "https://www.mppcb.mp.gov.in/proc/mon/Ganesh_and_Durga_visarjan_report-2024.pdf",
+   "sha256": "96f6a8c73530bc31283975ec3214a8fcc9982424964aa482de14e61e5a22e574"
+  },
+  "2025": {
+   "file": "Ganesh_and_Durga_visarjan_report-2025.pdf",
+   "title": "MPPCB Ganesh and Durga Visarjan Report 2025",
+   "titleHi": "म.प्र. प्रदूषण नियंत्रण बोर्ड — गणेश एवं दुर्गा विसर्जन रिपोर्ट 2025",
+   "url": "https://www.mppcb.mp.gov.in/proc/mon/Ganesh_and_Durga_visarjan_report-2025.pdf",
+   "sha256": "958967febe438dffdc16e3041e0d1acf24d028d26d766c445132a211af2c7c83"
+  }
+ },
+ "criteriaSource": "https://cpcb.gov.in/water-quality-criteria/",
+ "validationWarnings": []
+}

@@ -1,0 +1,193 @@
+[
+ {
+  "id": "bairagarh-sant-hirdaram-kund",
+  "canonicalName": "Bairagarh (Sant Hirdaram) kund",
+  "nameHi": "बैरागढ़ (संत हिरदाराम) कुंड",
+  "waterBody": "Upper Lake",
+  "printedAliases": [
+   "Sant Hirdaram Visarjan Kund, Bairagarh (Upper Lake), Bhopal",
+   "Sant Hirdaram Visarjankund, Bairagarh, Bhopal",
+   "Sant Hirdaram visarjan kund,Bairagarh(upper lake),Bhopal"
+  ],
+  "printedAliasesByFestival": {
+   "Ganesh": [
+    "Sant Hirdaram Visarjankund, Bairagarh, Bhopal"
+   ],
+   "Durga": [
+    "Sant Hirdaram Visarjan Kund, Bairagarh (Upper Lake), Bhopal",
+    "Sant Hirdaram visarjan kund,Bairagarh(upper lake),Bhopal"
+   ]
+  },
+  "identityConfidence": "high",
+  "identityNote": null,
+  "rowCount": 192,
+  "absentWindows": [
+   {
+    "year": 2025,
+    "festival": "Durga"
+   }
+  ]
+ },
+ {
+  "id": "khatlapura-ghat",
+  "canonicalName": "Khatlapura ghat",
+  "nameHi": "खटलापुरा घाट",
+  "waterBody": "Lower Lake",
+  "printedAliases": [
+   "Khatlapura Visarjan Ghat (Lower lake), Bhopal",
+   "Khatlapura Visarjanghat, Bhopal",
+   "Khatlapura murti visarjan ghat at lower lake, Bhopal",
+   "Khatlapura visarjan ghat (Lower lake), Bhopal",
+   "Khatlapura visarjan ghat (Lower lake),Bhopal"
+  ],
+  "printedAliasesByFestival": {
+   "Ganesh": [
+    "Khatlapura Visarjanghat, Bhopal",
+    "Khatlapura murti visarjan ghat at lower lake, Bhopal"
+   ],
+   "Durga": [
+    "Khatlapura Visarjan Ghat (Lower lake), Bhopal",
+    "Khatlapura visarjan ghat (Lower lake), Bhopal",
+    "Khatlapura visarjan ghat (Lower lake),Bhopal"
+   ]
+  },
+  "identityConfidence": "high",
+  "identityNote": null,
+  "rowCount": 228,
+  "absentWindows": []
+ },
+ {
+  "id": "prempura-ghat",
+  "canonicalName": "Prempura ghat",
+  "nameHi": "प्रेमपुरा घाट",
+  "waterBody": "Upper Lake",
+  "printedAliases": [
+   "Prempura Visarjanghat, Bhopal",
+   "Prempura ghat, Bhopal"
+  ],
+  "printedAliasesByFestival": {
+   "Ganesh": [
+    "Prempura Visarjanghat, Bhopal"
+   ],
+   "Durga": [
+    "Prempura ghat, Bhopal"
+   ]
+  },
+  "identityConfidence": "high",
+  "identityNote": null,
+  "rowCount": 228,
+  "absentWindows": []
+ },
+ {
+  "id": "rani-kamlapati-kamla-park",
+  "canonicalName": "Rani Kamlapati ghat / Kamla Park kund",
+  "nameHi": "रानी कमलापति घाट / कमला पार्क कुंड",
+  "waterBody": "Lower Lake (as printed in Durga tables)",
+  "printedAliases": [
+   "Rani Kamlapati Visarjan Ghat (Lower Lake), Bhopal",
+   "Rani Kamlapati, Kamla Park, Murti Visarjan Kund, Bhopal",
+   "Rani kamlapati visarjan ghat (lower lake)",
+   "Rani kamlapati,kamla park,murti visarjan kund, Bhopal",
+   "Rani kamlapati,kamla park,murti visarjan kund,Bhopal"
+  ],
+  "printedAliasesByFestival": {
+   "Ganesh": [
+    "Rani Kamlapati, Kamla Park, Murti Visarjan Kund, Bhopal",
+    "Rani kamlapati,kamla park,murti visarjan kund, Bhopal",
+    "Rani kamlapati,kamla park,murti visarjan kund,Bhopal"
+   ],
+   "Durga": [
+    "Rani Kamlapati Visarjan Ghat (Lower Lake), Bhopal",
+    "Rani kamlapati visarjan ghat (lower lake)"
+   ]
+  },
+  "identityConfidence": "medium",
+  "identityNote": "Ganesh tables print 'Kamla Park ... kund'; Durga tables print 'Rani Kamlapati visarjan ghat (Lower Lake)'. These may be two different physical places. Confirm the physical site before dispatching a team.",
+  "rowCount": 228,
+  "absentWindows": []
+ },
+ {
+  "id": "hathaikheda-dam-kund",
+  "canonicalName": "Hathaikheda dam / kund",
+  "nameHi": "हथाईखेड़ा डैम / कुंड",
+  "waterBody": "Hathaikheda dam",
+  "printedAliases": [
+   "Hathaikheda Visarjan Kund, Bhopal",
+   "Hathaikheda dam (ghat), Bhopal",
+   "Hathaikheda dam (ghat),bhopal",
+   "Hathaikheda visarjan kund, Bhopal"
+  ],
+  "printedAliasesByFestival": {
+   "Ganesh": [
+    "Hathaikheda Visarjan Kund, Bhopal",
+    "Hathaikheda visarjan kund, Bhopal"
+   ],
+   "Durga": [
+    "Hathaikheda dam (ghat), Bhopal",
+    "Hathaikheda dam (ghat),bhopal"
+   ]
+  },
+  "identityConfidence": "high",
+  "identityNote": null,
+  "rowCount": 228,
+  "absentWindows": []
+ },
+ {
+  "id": "malikhedi-kund",
+  "canonicalName": "Malikhedi kund",
+  "nameHi": "मालीखेड़ी कुंड",
+  "waterBody": "Kund",
+  "printedAliases": [
+   "Maalikhedi Visarjan Kund, Bhopal",
+   "Maalikhedi visarjan kund, Bhopal",
+   "Maalikhedi visarjan kund,bhopal"
+  ],
+  "printedAliasesByFestival": {
+   "Ganesh": [
+    "Maalikhedi Visarjan Kund, Bhopal",
+    "Maalikhedi visarjan kund, Bhopal"
+   ],
+   "Durga": [
+    "Maalikhedi Visarjan Kund, Bhopal",
+    "Maalikhedi visarjan kund,bhopal"
+   ]
+  },
+  "identityConfidence": "high",
+  "identityNote": null,
+  "rowCount": 192,
+  "absentWindows": [
+   {
+    "year": 2025,
+    "festival": "Durga"
+   }
+  ]
+ },
+ {
+  "id": "shahpura-lake-ghat",
+  "canonicalName": "Shahpura lake ghat",
+  "nameHi": "शाहपुरा झील घाट",
+  "waterBody": "Shahpura Lake",
+  "printedAliases": [
+   "Murti visarjan ghat at Shahpura ghat, Bhopal",
+   "Murti visarjan ghat at Shahpura lake,Bhopal",
+   "Murti-Visarjan Ghat At Shahpura Lake, Bhopal",
+   "Murti-visarjan ghat at Shahpura lake, Bhopal",
+   "Murti-visarjan ghat at Shahpura lake,Bhopal"
+  ],
+  "printedAliasesByFestival": {
+   "Ganesh": [
+    "Murti visarjan ghat at Shahpura ghat, Bhopal",
+    "Murti visarjan ghat at Shahpura lake,Bhopal"
+   ],
+   "Durga": [
+    "Murti-Visarjan Ghat At Shahpura Lake, Bhopal",
+    "Murti-visarjan ghat at Shahpura lake, Bhopal",
+    "Murti-visarjan ghat at Shahpura lake,Bhopal"
+   ]
+  },
+  "identityConfidence": "high",
+  "identityNote": null,
+  "rowCount": 228,
+  "absentWindows": []
+ }
+]
