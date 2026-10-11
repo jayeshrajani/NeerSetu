@@ -9,6 +9,8 @@ GhatWatch lines up three years of MPPCB immersion monitoring (2023–2025, 7 Bho
 
 ## Team
 
+The compressed [NeerSetu demo recording](docs/media/README.md) is available in four playable clips, each below 23 MB.
+
 | Name | Role |
 |---|---|
 | [MEMBER NAME] | [ROLE] |
