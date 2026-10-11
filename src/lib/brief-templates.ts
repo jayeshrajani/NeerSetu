@@ -215,7 +215,7 @@ export function renderBrief(f: GroundedBriefFacts, lang: Lang, override?: Narrat
   const en = lang === "en";
   return {
     lang,
-    title: en ? "GhatWatch officer brief — pre-visarjan testing priorities" : "GhatWatch अधिकारी संक्षेप — विसर्जन-पूर्व जाँच प्राथमिकताएँ",
+    title: en ? "NeerSetu officer brief - pre-visarjan testing priorities" : "NeerSetu अधिकारी संक्षेप - विसर्जन-पूर्व जाँच प्राथमिकताएँ",
     meta: en
       ? `MPPCB monitoring ${f.dataYears} · not live · for officer and technical review.`
       : `MPPCB निगरानी ${f.dataYears} · लाइव डेटा नहीं · अधिकारी व तकनीकी समीक्षा हेतु।`,

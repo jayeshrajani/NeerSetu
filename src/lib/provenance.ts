@@ -34,7 +34,7 @@ export function citationFor(o: Observation): Citation {
       : "page not recorded";
   const localUrl = `/reports/${o.year}${verified ? `#page=${page}` : ""}`;
   const value = o.valueAsPrinted === "" ? "(blank)" : o.valueAsPrinted;
-  const text = `${r?.title ?? `Report ${o.year}`}, ${pageLabel} — ${o.siteAsPrinted}; ${o.festival} ${o.year}, ${o.phase}-immersion; ${o.parameterAsPrinted} = ${value}. [GhatWatch ${o.id}; ${o.sourceCsv} line ${o.sourceCsvLine}]`;
+  const text = `${r?.title ?? `Report ${o.year}`}, ${pageLabel} — ${o.siteAsPrinted}; ${o.festival} ${o.year}, ${o.phase}-immersion; ${o.parameterAsPrinted} = ${value}. [NeerSetu ${o.id}; ${o.sourceCsv} line ${o.sourceCsvLine}]`;
   return {
     observationId: o.id,
     csvFile: o.sourceCsv,

@@ -337,7 +337,7 @@ export function PlanningConsole({ data, initialView, initialSite }: { data: Cons
                 </motion.h1>
 
                 <motion.p variants={heroItem} className="mt-5 max-w-[54ch] text-[15px] leading-relaxed text-fog-300">
-                  GhatWatch reads {data.meta.rows.toLocaleString("en-IN")} MPPCB measurements from {data.meta.years}, compares them with CPCB bathing-water screening levels,
+                  NeerSetu reads {data.meta.rows.toLocaleString("en-IN")} MPPCB measurements from {data.meta.years}, compares them with CPCB bathing-water screening levels,
                   and turns the {fest ?? "festival"} history into a dated plan for this year.
                 </motion.p>
 

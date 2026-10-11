@@ -8,7 +8,7 @@ import { CONCERN_UI, PRIORITY_UI } from "@/lib/ui-labels";
 import { shortName } from "@/lib/names";
 import { PlanningConsole, type ConsoleData } from "@/components/console/PlanningConsole";
 
-export const metadata: Metadata = { title: "Visarjan water plan" };
+export const metadata: Metadata = { title: { absolute: "NeerSetu" } };
 
 type SP = Promise<Record<string, string | string[] | undefined>>;
 const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);

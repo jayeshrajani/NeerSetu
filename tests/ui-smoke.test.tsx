@@ -30,8 +30,8 @@ describe("U05 — brief copy / print / review controls (jsdom)", () => {
   it("renders both languages immediately with the template badge and no AI button when unconfigured", () => {
     setup(false);
     expect(screen.getByText("Evidence-based template")).toBeTruthy();
-    expect(screen.getByText(/GhatWatch officer brief/)).toBeTruthy();
-    expect(screen.getByText(/GhatWatch अधिकारी संक्षेप/)).toBeTruthy();
+    expect(screen.getByText(/NeerSetu officer brief/)).toBeTruthy();
+    expect(screen.getByText(/NeerSetu अधिकारी संक्षेप/)).toBeTruthy();
     expect(screen.queryByText(/Refine wording with AI/)).toBeNull();
   });
 
@@ -40,7 +40,7 @@ describe("U05 — brief copy / print / review controls (jsdom)", () => {
     const box = screen.getByRole("checkbox") as HTMLInputElement;
     expect(box.checked).toBe(false);
     await act(async () => fireEvent.click(screen.getByText("Copy English")));
-    expect(writeText.mock.calls[0]![0]).toMatch(/^GhatWatch officer brief/);
+    expect(writeText.mock.calls[0]![0]).toMatch(/^NeerSetu officer brief/);
     expect(writeText.mock.calls[0]![0]).toContain("Reviewed by officer: [ ]");
     await act(async () => fireEvent.click(screen.getByText("Copy Hindi")));
     expect(writeText.mock.calls[1]![0]).toMatch(/अधिकारी द्वारा समीक्षा: \[ \]/);

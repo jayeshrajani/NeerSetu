@@ -4,6 +4,7 @@ import { engine, manifest, observations, sites, standardsFile } from "@/lib/data
 import { DEFAULT_FILTERS } from "@/lib/filters";
 import { rankSites, SCORING } from "@/lib/scoring";
 import { BASIS_LABEL, geo } from "@/lib/geo";
+import { CHAT_GUIDES } from "@/lib/chat-grounding";
 
 export const metadata: Metadata = { title: "Methodology" };
 
@@ -31,6 +32,7 @@ const TOC: [string, string][] = [
   ["map", "How the map places ghats"],
   ["today", "How “today” changes the plan"],
   ["brief", "How briefs are built and checked"],
+  ["chat", "Assistant and planning guidance"],
   ["limits", "What this tool cannot tell you"],
 ];
 
@@ -54,9 +56,9 @@ export default function MethodologyPage() {
       </nav>
       <article>
         <p className="text-[11px] uppercase tracking-[0.2em] text-tide-300">Methodology v{manifest.methodologyVersion}</p>
-        <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight sm:text-5xl">How GhatWatch ranks, and where it stops</h1>
+        <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight sm:text-5xl">How NeerSetu ranks, and where it stops</h1>
         <p className="mt-4 max-w-[75ch] text-fog-300">
-          GhatWatch is a historical screening and prioritisation aid. It is <strong className="text-fog-100">not a current live water report</strong>, not a safety
+          NeerSetu is a historical screening and prioritisation aid. It is <strong className="text-fog-100">not a current live water report</strong>, not a safety
           certificate, not a legal compliance finding, and not evidence that idol immersion caused any reading. All numbers below are computed from the
           bundled source files at build time.
         </p>
@@ -250,7 +252,7 @@ pH severity  = clamp(max(6.5 − pH, pH − 8.5, 0) / 2, 0, 1)`}
         <Section id="identity" title="Site names">
           <p>
             The pack maps varied printed names to seven standard names. <b className="text-fog-100">Rani Kamlapati ghat / Kamla Park kund</b> is medium confidence: Ganesh
-            tables print a Kamla Park kund, Durga tables print a Rani Kamlapati ghat on the Lower Lake. They may be two places. GhatWatch keeps the pack&apos;s single record but
+            tables print a Kamla Park kund, Durga tables print a Rani Kamlapati ghat on the Lower Lake. They may be two places. NeerSetu keeps the pack&apos;s single record but
             flags it everywhere, and on the map shows both candidate places joined by a dashed line.
           </p>
         </Section>
@@ -299,6 +301,25 @@ pH severity  = clamp(max(6.5 − pH, pH − 8.5, 0) / 2, 0, 1)`}
             which is always complete. Briefs carry an unticked &ldquo;Reviewed by officer&rdquo; marker.
           </p>
           <p className="text-sm text-fog-500">Hindi text is a team translation and should be reviewed by a native-speaking officer before circulation.</p>
+        </Section>
+
+        <Section id="chat" title="Assistant and planning guidance">
+          <p>
+            The assistant explains selected historical observations and the general procedures below in English or Hinglish. These procedures are team-authored planning
+            guidance, not MPPCB findings, official orders or engineered treatment plans. Each substantive reply links its observations or guidance. Numeric claims must be
+            present in the cited source. Current conditions and permissions still require local confirmation. Replies do not replace an officer or technical review.
+          </p>
+          <p>
+            Recent messages are sent to the configured AI provider only when a question is submitted. The conversation stays in browser memory, is not saved by NeerSetu,
+            and is cleared by starting a new conversation or reloading. Do not share personal details or secrets. Provider retention follows the provider&apos;s own policy.
+            If AI is unavailable or a reply fails checks, an explicit error is shown rather than a canned answer presented as AI.
+          </p>
+          {CHAT_GUIDES.map((guide) => (
+            <details id={`chat-${guide.id}`} key={guide.id} className="scroll-mt-20 border-t keyline py-3">
+              <summary className="font-semibold text-fog-100">{guide.title}</summary>
+              <p className="mt-2 text-sm leading-relaxed">{guide.text}</p>
+            </details>
+          ))}
         </Section>
 
         <Section id="limits" title="What this tool cannot tell you">

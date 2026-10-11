@@ -112,3 +112,11 @@ Facts (values, comparisons, citations) are assembled deterministically (`src/lib
 ## 10. Prohibited inferences
 
 No current water quality, no 2026 authorisation status, no causation from immersion, no health effects, no Class B compliance, no geolocation.
+
+## 11. NeerSetu Assistant
+
+The optional conversational assistant uses the same historical observations, plus team-authored general planning procedures in `src/lib/chat-grounding.ts` (also published on `/methodology#chat`). The model explains or rewrites supplied evidence and guidance; it does not produce new measured facts or treatment plans. Cleanup, prevention, oxygen-demand investigation, inflow inspection and field precautions are guidance, not report findings or official instructions.
+
+The server retrieves evidence using recent user questions and an optional known ghat context. Recent messages support follow-ups and English/Hindi/Hinglish interpretation; replies match English or Roman Hinglish. Each substantive reply block and action references allow-listed observations or guidance. Every numeric claim must appear in its cited source. Unsupported assurances, causal claims and chemical-treatment instructions are rejected. Observation links preserve observation ID, CSV line and verified PDF-page provenance. No credentials or provider endpoints are supplied by the browser.
+
+Requests are size-bounded, schema-checked, same-origin and rate-limited on a best-effort per-instance basis, with an overall AI timeout. Failed or unconfigured AI is reported explicitly, never replaced by a generic reply presented as AI. Conversation history stays in browser memory and is sent to the configured provider only on submission; NeerSetu does not persist it. The provider's retention policy still applies. Do not submit secrets or personal information. Advice requires local officer/technical review; the assistant has no live monitoring or web-browsing capability.

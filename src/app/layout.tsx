@@ -10,7 +10,7 @@ import "./globals.css";
 import { AppShell } from "@/components/AppShell";
 
 export const metadata: Metadata = {
-  title: { default: "GhatWatch — Bhopal immersion water-quality intelligence", template: "%s · GhatWatch" },
+  title: { default: "NeerSetu", template: "%s · NeerSetu" },
   description:
     "Evidence-backed pre-visarjan prioritisation of seven Bhopal ghats from MPPCB 2023–2025 monitoring, with CPCB Class B screening, source-page traceability and a bilingual officer brief.",
 };

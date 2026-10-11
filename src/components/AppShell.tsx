@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { manifest } from "@/lib/data";
 import { NavLink } from "@/components/NavLink";
+import { ChatAssistant } from "@/components/ChatAssistant";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
@@ -10,8 +11,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </a>
       <header data-noprint className="sticky top-0 z-40 h-[52px] border-b keyline bg-ink-950">
         <div className="mx-auto flex h-full max-w-[1600px] items-center gap-6 px-4 sm:px-6">
-          <Link href="/" className="flex items-baseline gap-2" aria-label="GhatWatch home">
-            <span className="text-[15px] font-semibold tracking-tight">GhatWatch</span>
+          <Link href="/" className="flex items-baseline gap-2" aria-label="NeerSetu home">
+            <span className="text-[15px] font-semibold tracking-tight">NeerSetu</span>
             <span className="hidden text-xs text-fog-500 md:inline">/ Bhopal visarjan water records</span>
           </Link>
           <span className="eyebrow hidden lg:inline">
@@ -45,6 +46,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <span className="num ml-auto">methodology v{manifest.methodologyVersion} · MIT</span>
         </div>
       </footer>
+      <ChatAssistant />
     </div>
   );
 }
