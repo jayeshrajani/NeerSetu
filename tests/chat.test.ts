@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { chatRequestSchema } from "@/lib/chat";
-import { buildChatGrounding, validateChatAnswer } from "@/lib/chat-grounding";
+import { chatRequestSchema, PAST_READINGS_QUESTION } from "@/lib/chat";
+import { buildChatGrounding, starterEvidenceAnswer, validateChatAnswer } from "@/lib/chat-grounding";
 import { observations } from "@/lib/data";
 
 describe("Grounded NeerSetu conversation", () => {
@@ -14,6 +14,32 @@ describe("Grounded NeerSetu conversation", () => {
     expect(grounding.evidence.length).toBeGreaterThan(0);
     expect(grounding.evidence.every((item) => item.site.toLowerCase().includes("khatlapura") && item.festival === "Durga" && item.parameter === "Dissolved oxygen")).toBe(true);
     expect(grounding.sources.filter((item) => item.kind === "observation").every((item) => item.csvLine && item.detail.includes("line"))).toBe(true);
+  });
+
+  it("does not expose uncitable ranking statistics or out-of-catalogue observation IDs", () => {
+    const result = buildChatGrounding({ messages: [{ role: "user", content: "Which past readings at Khatlapura need a fresh check?" }] });
+    expect(result.ranking).toHaveLength(1);
+    expect(result.ranking[0]?.siteId).toBe("khatlapura-ghat");
+    expect(result.ranking[0]).not.toHaveProperty("coverage");
+    expect(result.ranking[0]).not.toHaveProperty("reasons");
+  });
+
+  it("assembles the first starter answer from real rows with bounded citations", () => {
+    const request = { messages: [{ role: "user" as const, content: PAST_READINGS_QUESTION }] };
+    const context = buildChatGrounding(request);
+    const result = starterEvidenceAnswer(request, context)!;
+    expect(validateChatAnswer(result, context)).toEqual(result);
+    expect(result.answer.filter((block) => block.evidenceIds.length)).toHaveLength(3);
+    for (const block of result.answer.filter((item) => item.evidenceIds.length)) {
+      const row = observations.find((item) => item.id === block.evidenceIds[0])!;
+      expect(block.evidenceIds).toHaveLength(1);
+      expect(row.siteId).toBe("khatlapura-ghat");
+      expect(row.benchmarkStatus).toBe("outside_screening_benchmark");
+      expect(block.text).toContain(row.valueAsPrinted);
+      expect(block.text).toContain(String(row.year));
+      expect(block.text).toContain(row.festival);
+    }
+    expect(starterEvidenceAnswer({ messages: [{ role: "user", content: "How should we collect flowers?" }] }, context)).toBeNull();
   });
 
   it("retains conversational follow-up context", () => {

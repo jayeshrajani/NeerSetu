@@ -3,11 +3,11 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { ArrowUp, ArrowUpRight, BookOpen, Check, Copy, MessageCircle, Minus, RotateCcw, Sparkles, Square, Waves, X } from "lucide-react";
-import { chatAnswerSchema, conversationText, type ChatAnswer, type ChatBlock, type ChatRequest, type ChatResponse, type ChatSource } from "@/lib/chat";
+import { chatAnswerSchema, conversationText, PAST_READINGS_QUESTION, type ChatAnswer, type ChatBlock, type ChatRequest, type ChatResponse, type ChatSource } from "@/lib/chat";
 
-type Message = { id: string; role: "user"; text: string } | { id: string; role: "assistant"; answer: ChatAnswer; sources: ChatSource[] };
+type Message = { id: string; role: "user"; text: string } | { id: string; role: "assistant"; mode: ChatResponse["mode"]; answer: ChatAnswer; sources: ChatSource[] };
 const suggestions = [
-  "Which past readings at Khatlapura need a fresh check?",
+  PAST_READINGS_QUESTION,
   "Visarjan ke baad phool aur plastic kaise alag collect karein?",
   "If foam appears near a drain, what should I record and report?",
 ];
@@ -99,7 +99,7 @@ export function ChatAssistant() {
       const answer = chatAnswerSchema.parse(body.answer);
       if (!Array.isArray(body.sources)) throw new Error("The reply could not be loaded. Please retry.");
       if (controllerRef.current !== controller) return;
-      setMessages((previous) => [...previous, { id: crypto.randomUUID(), role: "assistant", answer, sources: body.sources }]);
+      setMessages((previous) => [...previous, { id: crypto.randomUUID(), role: "assistant", mode: body.mode, answer, sources: body.sources }]);
       setPendingRequest(null);
     } catch (failure) {
       if (controllerRef.current !== controller) return;
@@ -178,7 +178,7 @@ export function ChatAssistant() {
               <div className="chat-user" key={message.id}><span className="sr-only">You: </span>{message.text}</div>
             ) : (
               <article ref={index === messages.length - 1 ? latestReplyRef : undefined} className="chat-reply" key={message.id} lang={message.answer.language === "en" ? "en" : "hi-Latn"}>
-                <div className="chat-reply-byline"><Waves size={14} aria-hidden /><span>NeerSetu</span><button className="chat-icon" type="button" title="Copy reply" aria-label="Copy reply" onClick={() => void copy(message)}>{copied === message.id ? <Check size={14} /> : <Copy size={14} />}</button></div>
+                <div className="chat-reply-byline"><Waves size={14} aria-hidden /><span>NeerSetu</span>{message.mode === "evidence" && <span className="text-fog-300">Source answer</span>}<button className="chat-icon" type="button" title="Copy reply" aria-label="Copy reply" onClick={() => void copy(message)}>{copied === message.id ? <Check size={14} /> : <Copy size={14} />}</button></div>
                 {message.answer.answer.map((block, index) => <div key={index} className="chat-block"><p>{block.text}</p><SourceLinks block={block} sources={message.sources} /></div>)}
                 <div className="chat-next"><h4>{message.answer.language === "en" ? "What to do next" : "Ab kya karein"}</h4><ol>{message.answer.nextSteps.map((block, index) => <li key={index}><p>{block.text}</p><SourceLinks block={block} sources={message.sources} /></li>)}</ol></div>
                 {message.answer.followUp && <p className="chat-followup">{message.answer.followUp}</p>}

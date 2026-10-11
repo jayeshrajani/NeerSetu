@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { buildChatGrounding } from "@/lib/chat-grounding";
 import { generateChat } from "@/lib/ai/chat-provider";
 import { POST } from "@/app/api/chat/route";
+import { PAST_READINGS_QUESTION } from "@/lib/chat";
 
 const conversation = { messages: [{ role: "user" as const, content: "Ghat ki safai kaise karein?" }] };
 const answer = { language: "hinglish", answer: [{ text: "Kinare ka plastic aur phool alag collect karein. Paani mein na utrein.", evidenceIds: [], guideIds: ["cleanup"] }], nextSteps: [{ text: "Municipal team se floating waste retrieval aur bag pickup arrange karein.", evidenceIds: [], guideIds: ["cleanup"] }], followUp: "Kis ghat par safai karni hai?" };
@@ -10,6 +11,21 @@ const env = { AI_PROVIDER: "cerebras", AI_MODEL: "qwen-3.8-27b", CEREBRAS_API_KE
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllEnvs(); });
 
 describe("Chat transport and failure states", () => {
+  it("returns the starter's cited source answer without a provider, even when AI is unavailable", async () => {
+    vi.stubEnv("AI_PROVIDER", "none");
+    const spy = vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("AI unavailable"));
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      const response = await POST(new Request("http://localhost/api/chat", { method: "POST", body: JSON.stringify({ messages: [{ role: "user", content: PAST_READINGS_QUESTION }] }) }));
+      const body = await response.json();
+      expect(response.status).toBe(200);
+      expect(body.mode).toBe("evidence");
+      expect(body.answer.answer.filter((block: { evidenceIds: string[] }) => block.evidenceIds.length)).toHaveLength(3);
+      const sourceIds = new Set(body.sources.map((source: { id: string }) => source.id));
+      expect(body.answer.answer.every((block: { evidenceIds: string[] }) => block.evidenceIds.every((id) => sourceIds.has(id)))).toBe(true);
+    }
+    expect(spy).not.toHaveBeenCalled();
+  });
+
   it("sends real history to the provider with grounding and keeps keys out of results", async () => {
     const spy = vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response(JSON.stringify({ choices: [{ message: { content: JSON.stringify(answer) } }] })));
     const result = await generateChat(conversation, buildChatGrounding(conversation), new AbortController().signal, env);
@@ -17,6 +33,7 @@ describe("Chat transport and failure states", () => {
     const body = JSON.parse(spy.mock.calls[0]![1]!.body as string);
     expect(body.messages.at(-1).content).toBe(conversation.messages[0]!.content);
     expect(body.messages[0].content).toContain("GROUNDING");
+    expect(body.messages[0].content).toContain("SIX evidenceIds");
     expect(body.reasoning_effort).toBe("none");
     expect(JSON.stringify(result)).not.toContain("test-secret");
   });
@@ -46,6 +63,18 @@ describe("Chat transport and failure states", () => {
     expect(spy).toHaveBeenCalledTimes(2);
     expect(spy.mock.calls.every((call) => call[1]?.signal === signal)).toBe(true);
     expect(JSON.parse(spy.mock.calls[1]![1]!.body as string).messages[0].content).toContain("CORRECTION");
+  });
+
+  it("reports the actual citation-limit defect in the correction prompt without accepting it", async () => {
+    const grounding = buildChatGrounding({ messages: [{ role: "user", content: "Which past readings at Khatlapura need a fresh check?" }] });
+    const crowded = { ...answer, answer: [{ text: "Past tests need a fresh check.", evidenceIds: grounding.evidence.slice(0, 7).map((item) => item.id), guideIds: ["sampling"] }] };
+    const spy = vi.spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(new Response(JSON.stringify({ choices: [{ message: { content: JSON.stringify(crowded) } }] })))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ choices: [{ message: { content: JSON.stringify(answer) } }] })));
+    expect(await generateChat(conversation, grounding, new AbortController().signal, env)).toEqual(answer);
+    const correction = JSON.parse(spy.mock.calls[1]![1]!.body as string).messages[0].content;
+    expect(correction).toContain("answer.0.evidenceIds");
+    expect(correction).toContain("at most six observation IDs");
   });
 
   it("rejects cross-origin, invalid and oversized requests before provider calls", async () => {

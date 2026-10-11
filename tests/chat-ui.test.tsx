@@ -2,6 +2,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { ChatAssistant } from "@/components/ChatAssistant";
+import { PAST_READINGS_QUESTION } from "@/lib/chat";
 
 vi.mock("next/navigation", () => ({ usePathname: () => "/ghats/khatlapura-ghat" }));
 const cleanupQuestion = "Visarjan ke baad phool aur plastic kaise alag collect karein?";
@@ -11,6 +12,13 @@ afterEach(() => { cleanup(); vi.restoreAllMocks(); });
 const open = () => { render(<ChatAssistant />); fireEvent.click(screen.getByRole("button", { name: "Open NeerSetu chat" })); };
 
 describe("Floating NeerSetu chat", () => {
+  it("labels the reliable first starter response as a source answer", async () => {
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response(JSON.stringify({ ...reply, mode: "evidence" })));
+    open();
+    await act(async () => { fireEvent.click(screen.getByRole("button", { name: PAST_READINGS_QUESTION })); });
+    expect(screen.getByText("Source answer")).toBeTruthy();
+  });
+
   it("opens with input focus and minimizes without losing the conversation", () => {
     open();
     expect(screen.queryByRole("button", { name: "Which ghat should we check first?" })).toBeNull();

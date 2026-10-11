@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+export const PAST_READINGS_QUESTION = "Which past readings at Khatlapura need a fresh check?";
+
 export const chatRequestSchema = z.object({
   messages: z.array(z.object({
     role: z.enum(["user", "assistant"]),
@@ -37,7 +39,7 @@ export interface ChatSource {
 }
 
 export interface ChatResponse {
-  mode: "ai";
+  mode: "ai" | "evidence";
   answer: ChatAnswer;
   sources: ChatSource[];
 }

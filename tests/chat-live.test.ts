@@ -2,11 +2,15 @@ import { describe, expect, it, vi } from "vitest";
 import { generateChat } from "@/lib/ai/chat-provider";
 import { buildChatGrounding, validateChatAnswer } from "@/lib/chat-grounding";
 import { extractJson } from "@/lib/ai/provider";
+import { POST } from "@/app/api/chat/route";
+import { PAST_READINGS_QUESTION, type ChatAnswer } from "@/lib/chat";
 
 describe.skipIf(process.env.NEERSETU_LIVE_CHAT !== "1")("Live chat quality (explicit opt-in)", () => {
   it.each([
     "What was the lowest dissolved oxygen at Khatlapura during Durga, and what should we do about it?",
-    "Which ghat should we check first?",
+    "Which past readings at Khatlapura need a fresh check?",
+    "Which past readings at Khatlapura need a fresh check?",
+    "Which past readings at Khatlapura need a fresh check?",
   ])("answers %s with evidence and actions", async (question) => {
     process.loadEnvFile(".env");
     const request = { messages: [{ role: "user" as const, content: question }] };
@@ -20,8 +24,18 @@ describe.skipIf(process.env.NEERSETU_LIVE_CHAT !== "1")("Live chat quality (expl
       return response;
     });
     try {
-      await generateChat(request, grounding, AbortSignal.timeout(60_000));
-      const answer = validateChatAnswer(extractJson(modelText), grounding);
+      let answer: ChatAnswer;
+      if (question === PAST_READINGS_QUESTION) {
+        const response = await POST(new Request("http://localhost/api/chat", { method: "POST", body: JSON.stringify(request) }));
+        const body = await response.json();
+        expect(response.status).toBe(200);
+        expect(body.mode).toBe("evidence");
+        expect(spy).not.toHaveBeenCalled();
+        answer = validateChatAnswer(body.answer, grounding);
+      } else {
+        await generateChat(request, grounding, AbortSignal.timeout(60_000));
+        answer = validateChatAnswer(extractJson(modelText), grounding);
+      }
       expect(answer.language).toBe("en");
       expect(answer.answer.some((block) => block.evidenceIds.length > 0)).toBe(true);
       if (question.includes("lowest dissolved oxygen")) {

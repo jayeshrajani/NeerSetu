@@ -3,7 +3,7 @@ import { DEFAULT_FILTERS } from "@/lib/filters";
 import { rankSites } from "@/lib/scoring";
 import { citationFor } from "@/lib/provenance";
 import { resolveToday } from "@/lib/calendar";
-import { chatAnswerSchema, type ChatRequest, type ChatSource } from "@/lib/chat";
+import { chatAnswerSchema, PAST_READINGS_QUESTION, type ChatAnswer, type ChatRequest, type ChatSource } from "@/lib/chat";
 
 export const CHAT_GUIDES = [
   { id: "cleanup", title: "Shoreline and floating-waste cleanup", text: "Separate flowers and other organic offerings from plastic, cloth and packaging at collection points. Collect reachable litter from the bank with litter pickers, gloves and closed footwear. Arrange municipal collection and approved disposal; do not leave filled bags at the bank. Trained municipal crews should retrieve floating debris with nets or skimmers from designated access points. Volunteers should not enter the water, lean over unstable edges, handle sharps, or operate boats. Mark sharps for trained handlers. General planning guidance, not a site-specific instruction or official order." },
@@ -61,7 +61,7 @@ export function buildChatGrounding(request: ChatRequest) {
   return {
     today: resolveToday(undefined).today,
     scope: "Bhopal organiser-pack historical observations only. No live readings or current authorisation.",
-    ranking: ranked.map((site) => ({ siteId: site.id, name: site.canonicalName, historicalConcern: site.historicalConcern, samplingPriority: site.samplingPriority, identityUncertain: site.needsIdentityVerification, coverage: site.coverage, reasons: site.topReasons })),
+    ranking: ranked.filter((site) => selectedIds.includes(site.id)).map((site) => ({ siteId: site.id, name: site.canonicalName, historicalConcern: site.historicalConcern, samplingPriority: site.samplingPriority, identityUncertain: site.needsIdentityVerification })),
     evidence: picked.map((observation) => ({ id: observation.id, site: observation.siteCanonical, parameter: observation.parameter, value: observation.valueAsPrinted, year: observation.year, festival: observation.festival, phase: observation.phase, status: observation.measurementStatus, unitAssumed: observation.unitAssumed, screening: observation.benchmarkStatus })),
     guides: CHAT_GUIDES,
     sources,
@@ -71,9 +71,36 @@ export function buildChatGrounding(request: ChatRequest) {
 
 export type ChatGrounding = ReturnType<typeof buildChatGrounding>;
 
+export function starterEvidenceAnswer(request: ChatRequest, grounding: ChatGrounding): ChatAnswer | null {
+  if (request.messages.at(-1)?.content.trim() !== PAST_READINGS_QUESTION) return null;
+  const site = sites.find((item) => item.id === "khatlapura-ghat")!;
+  const phases: Record<string, string> = { pre: "before immersion", during: "during immersion", after: "one week after immersion" };
+  const labels: Record<string, string> = { "Dissolved oxygen": "oxygen in the water", BOD: "oxygen demand (BOD)", pH: "pH" };
+  const readings = ["Dissolved oxygen", "BOD", "pH"].flatMap((parameter) => {
+    const candidates = grounding.evidence.filter((item) => item.site === site.canonicalName && item.parameter === parameter && item.status === "numeric" && item.screening === "outside_screening_benchmark");
+    const reading = candidates.toSorted((first, second) => engine.severity(parameter, Number(second.value)) - engine.severity(parameter, Number(first.value)))[0];
+    return reading ? [reading] : [];
+  });
+  return validateChatAnswer({
+    language: "en",
+    answer: [
+      ...readings.map((reading) => ({
+        text: `${reading.site}: ${labels[reading.parameter]} was ${reading.value}${reading.unitAssumed ? ` ${reading.unitAssumed}` : ""} in ${reading.festival} ${reading.year}, ${phases[reading.phase]}. This was outside its screening level and warrants a fresh check.`,
+        evidenceIds: [reading.id], guideIds: ["screening"],
+      })),
+      { text: readings.length ? "These are selected historical readings, not today's water conditions. Units are assumed from the supplied tables. Fresh testing is needed; this is not a complete list of past results." : "No outside-screening reading is available in this evidence selection. That does not establish today's condition; request fresh tests.", evidenceIds: [], guideIds: ["screening", "sampling"] },
+    ],
+    nextSteps: [
+      { text: "Ask the authorised monitoring team to test oxygen in the water, oxygen demand and pH at documented points. Record the location, date, time and visible inflows.", evidenceIds: [], guideIds: ["sampling"] },
+      { text: "Ask the technical team to inspect nearby wastewater inflows and accumulated organic waste. Use fresh results to decide whether further intervention is needed, not the old readings alone.", evidenceIds: [], guideIds: ["oxygen", "inflows"] },
+    ],
+    followUp: "",
+  }, grounding);
+}
+
 export function validateChatAnswer(value: unknown, grounding: ChatGrounding) {
   const parsed = chatAnswerSchema.safeParse(value);
-  if (!parsed.success) throw new Error("Invalid chat answer structure");
+  if (!parsed.success) throw new Error(`Invalid chat answer structure: ${parsed.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`).join("; ")}`);
   const answer = parsed.data;
   for (const block of [...answer.answer, ...answer.nextSteps]) {
     const evidence = block.evidenceIds.map((id) => grounding.evidence.find((item) => item.id === id));

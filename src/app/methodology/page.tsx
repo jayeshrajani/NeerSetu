@@ -305,6 +305,10 @@ pH severity  = clamp(max(6.5 − pH, pH − 8.5, 0) / 2, 0, 1)`}
 
         <Section id="chat" title="Assistant and planning guidance">
           <p>
+            The Khatlapura past-readings starter is labelled &ldquo;Source answer&rdquo;: its measurements and citations are assembled directly from historical rows,
+            without AI. Follow-up questions can use the configured AI provider. Both paths use the same evidence checks.
+          </p>
+          <p>
             The assistant explains selected historical observations and the general procedures below in English or Hinglish. These procedures are team-authored planning
             guidance, not MPPCB findings, official orders or engineered treatment plans. Each substantive reply links its observations or guidance. Numeric claims must be
             present in the cited source. Current conditions and permissions still require local confirmation. Replies do not replace an officer or technical review.

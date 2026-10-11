@@ -1,5 +1,5 @@
 import { chatRequestSchema, type ChatResponse } from "@/lib/chat";
-import { buildChatGrounding } from "@/lib/chat-grounding";
+import { buildChatGrounding, starterEvidenceAnswer } from "@/lib/chat-grounding";
 import { generateChat } from "@/lib/ai/chat-provider";
 import { timeoutFromEnv } from "@/lib/ai";
 import { ProviderError } from "@/lib/ai/provider";
@@ -54,9 +54,10 @@ export async function POST(request: Request) {
   const timer = setTimeout(() => controller.abort(), timeoutFromEnv());
   try {
     const grounding = buildChatGrounding(parsed.data);
-    const answer = await generateChat(parsed.data, grounding, signal);
+    const sourceAnswer = starterEvidenceAnswer(parsed.data, grounding);
+    const answer = sourceAnswer ?? await generateChat(parsed.data, grounding, signal);
     const used = new Set([...answer.answer, ...answer.nextSteps].flatMap((block) => [...block.evidenceIds, ...block.guideIds]));
-    const result: ChatResponse = { mode: "ai", answer, sources: grounding.sources.filter((source) => used.has(source.id)) };
+    const result: ChatResponse = { mode: sourceAnswer ? "evidence" : "ai", answer, sources: grounding.sources.filter((source) => used.has(source.id)) };
     return Response.json(result, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     if (signal.aborted) return bad("The AI took too long. Your question is still here; please retry.", 504);
