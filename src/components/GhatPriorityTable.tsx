@@ -33,7 +33,53 @@ export function ReasonItem({ r, max = 4 }: { r: Reason; max?: number }) {
   );
 }
 
-export function GhatPriorityTable({ summaries, scopeQuery }: { summaries: SiteSummary[]; scopeQuery: string }) {
+const SIMPLE_REASONS: Record<Reason["code"], string> = {
+  do_zero: "Oxygen was recorded as zero.",
+  do_severe: "Very low oxygen in past samples.",
+  bod_severe: "High oxygen demand in past samples.",
+  do_below: "Low oxygen in past samples.",
+  bod_above: "Raised oxygen demand in past samples.",
+  ph_outside: "Some pH readings were outside the screening range.",
+  recurrence: "Concerns appeared in more than one sampling period.",
+  absent_window: "Some festival records are missing.",
+  phases_not_sampled: "Some sampling stages have no readings.",
+  identity: "Confirm which location the report names refer to.",
+  no_comparable: "Too little evidence to compare this ghat.",
+};
+
+export function GhatPriorityTable({ summaries, scopeQuery, compact = false }: { summaries: SiteSummary[]; scopeQuery: string; compact?: boolean }) {
+  if (compact) return (
+    <ol className="divide-y keyline border-y">
+      {summaries.map((s) => (
+        <li key={s.id} className="grid gap-4 py-5 [&>*]:min-w-0 sm:grid-cols-[2rem_minmax(0,1fr)] lg:grid-cols-[2rem_minmax(0,1fr)_minmax(0,1.2fr)_minmax(0,1fr)] lg:gap-6">
+          <span className="num text-xl text-fog-500" aria-label={s.rank ? `Rank ${s.rank}` : "Not enough evidence to rank"}>{s.rank ?? "?"}</span>
+          <div>
+            <Link href={`/ghats/${s.id}${scopeQuery}`} className="inline-flex items-start gap-1 font-display text-lg font-medium text-fog-100 hover:text-tide-200">
+              {s.canonicalName}<ArrowUpRight className="mt-1 size-4 shrink-0" aria-hidden />
+            </Link>
+            <p className="mt-1 text-xs text-fog-500">{s.waterBody}</p>
+            <div className="mt-2"><ConcernBadge concern={s.historicalConcern} compact /></div>
+            {s.needsIdentityVerification && <div className="mt-2"><IdentityFlag note={s.identityNote} /></div>}
+          </div>
+          <div className="sm:col-start-2 lg:col-start-auto">
+            <p className="text-sm leading-relaxed text-fog-300">{s.topReasons[0] ? SIMPLE_REASONS[s.topReasons[0].code] : "Past readings need a closer look."}</p>
+            <details className="mt-2">
+              <summary className="text-xs text-tide-300">Reasons and source readings</summary>
+              <div className="mt-3 grid gap-2">
+                {s.topReasons.map((reason, index) => <ReasonItem key={`${reason.code}-${index}`} r={reason} />)}
+                <CoverageIndicator c={s.coverage} />
+              </div>
+            </details>
+          </div>
+          <div className="sm:col-start-2 lg:col-start-auto">
+            <PriorityBadge priority={s.samplingPriority} />
+            <p className="mt-2 text-sm text-fog-300">{s.components ? "Take fresh samples and review the results." : "Collect missing readings before comparing."}</p>
+            <div className="mt-3"><SelectToggle id={s.id} name={s.canonicalName} /></div>
+          </div>
+        </li>
+      ))}
+    </ol>
+  );
   return (
     <div className="grid gap-3">
       <div className="hidden grid-cols-[3.5rem_minmax(11rem,1.2fr)_minmax(9.5rem,0.85fr)_minmax(15rem,1.7fr)_minmax(11.5rem,0.9fr)_minmax(10rem,0.9fr)_6.5rem] gap-4 px-5 text-[11px] uppercase tracking-[0.14em] text-fog-500 xl:grid">

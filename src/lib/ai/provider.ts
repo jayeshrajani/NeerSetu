@@ -36,7 +36,7 @@ export function userPrompt(f: GroundedBriefFacts): string {
   const slim = {
     scope: f.scope,
     dataYears: f.dataYears,
-    eventContext: "Durga visarjan on 20 October 2026 (event context).",
+    eventContext: f.presentation === "summary" ? "Reviewing the historical ranking in the supplied scope; no event date is implied." : "Durga visarjan on 20 October 2026 (event context).",
     allowedEvidenceIds: f.allowedEvidenceIds,
     sites: f.sites.map((s) => ({
       siteId: s.siteId,
@@ -68,7 +68,10 @@ export function userPrompt(f: GroundedBriefFacts): string {
       "2026 site authorisation unverified.",
     ],
   };
-  return `FACTS:\n${JSON.stringify(slim)}`;
+  const style = f.presentation === "summary"
+    ? "Write a plain-language ranking summary, not a full brief. Purpose: at most two short sentences and 45 words per language. Name the selected ghats and say they need review based on past tests, not current results. Actions: two or three short items, at most 18 words each. Explain low dissolved oxygen as low oxygen in the water, and raised BOD as high oxygen demand. Avoid acronyms, scores, numbers and administrative jargon. Use simple everyday Hindi. Do not change the supplied ranking or choose new sites. Include the evidence IDs supporting your wording.\n"
+    : "";
+  return `${style}FACTS:\n${JSON.stringify(slim)}`;
 }
 
 /** Extract the first JSON object from model text (handles accidental code fences). */

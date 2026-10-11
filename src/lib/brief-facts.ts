@@ -65,6 +65,7 @@ export interface BriefCitation {
 }
 
 export interface GroundedBriefFacts {
+  presentation?: "summary";
   scope: string;
   filters: Filters;
   dataYears: string;

@@ -3,12 +3,14 @@ import { buildBriefFacts, MAX_BRIEF_SITES } from "@/lib/brief-facts";
 import { renderBrief } from "@/lib/brief-templates";
 import { parseFilters } from "@/lib/filters";
 import { composeNarrative, providerFromEnv, timeoutFromEnv } from "@/lib/ai";
+import { rankingFallback } from "@/lib/ranking-summary";
 
 export const dynamic = "force-dynamic";
 
 const MAX_BODY = 2048;
 const bodySchema = z
   .object({
+    presentation: z.literal("summary").optional(),
     siteIds: z.array(z.string().max(60)).min(1).max(MAX_BRIEF_SITES),
     filters: z
       .object({
@@ -63,9 +65,14 @@ export async function POST(req: Request) {
 
   const facts = buildBriefFacts(parsed.data.siteIds, filters.filters);
   if (!facts.ok) return bad(facts.error);
+  facts.facts.presentation = parsed.data.presentation;
+  const summaryFallback = (notice: string, reason?: string) => Response.json({
+    mode: "template", notice, reason, summary: rankingFallback(facts.facts),
+  });
 
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
   if (throttled(ip)) {
+    if (parsed.data.presentation === "summary") return summaryFallback("AI request limit reached. Showing the plain-language summary.", "throttled");
     return Response.json({
       mode: "template",
       notice: "Too many AI requests; showing the evidence-based template.",
@@ -75,6 +82,20 @@ export async function POST(req: Request) {
   }
 
   const result = await composeNarrative(facts.facts, providerFromEnv(), timeoutFromEnv());
+  if (result.mode === "template" && result.details) console.warn("[api/brief] AI output rejected:", result.details.join(" | "));
+  if (parsed.data.presentation === "summary") {
+    if (result.mode !== "ai") return summaryFallback(result.notice, result.reason);
+    const narrative = result.narrative;
+    const shortEnough = [narrative.purposeEn, narrative.purposeHi].every((text) => text.length <= 600)
+      && [...narrative.actionsEn, ...narrative.actionsHi].every((text) => text.length <= 180)
+      && narrative.actionsEn.length <= 3 && narrative.actionsHi.length === narrative.actionsEn.length;
+    if (!shortEnough || !narrative.evidenceIdsUsed.length) return summaryFallback("AI summary did not pass review. Showing the plain-language summary.", "validation_failed");
+    const actions = rankingFallback(facts.facts);
+    return Response.json({ mode: "ai", provider: result.provider, summary: {
+      purposeEn: narrative.purposeEn, purposeHi: narrative.purposeHi,
+      actionsEn: actions.actionsEn, actionsHi: actions.actionsHi,
+    }, evidenceIdsUsed: narrative.evidenceIdsUsed });
+  }
   if (result.mode === "ai") {
     const n = result.narrative;
     return Response.json({
@@ -85,7 +106,6 @@ export async function POST(req: Request) {
       briefHi: renderBrief(facts.facts, "hi", { purpose: n.purposeHi, actions: n.actionsHi }),
     });
   }
-  if (result.details) console.warn("[api/brief] AI output rejected:", result.details.join(" | "));
   return Response.json({
     mode: "template",
     notice: result.notice,

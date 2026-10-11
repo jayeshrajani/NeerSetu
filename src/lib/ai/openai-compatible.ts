@@ -20,6 +20,7 @@ export function openAiCompatibleProvider(
           model,
           temperature: 0.2,
           max_tokens: 1500,
+          ...(facts.presentation === "summary" && id === "cerebras" && model === "qwen-3.8-27b" ? { reasoning_effort: "none" } : {}),
           response_format: { type: "json_object" },
           messages: [
             { role: "system", content: SYSTEM_PROMPT },

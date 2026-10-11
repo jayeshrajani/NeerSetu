@@ -6,8 +6,11 @@ import { rankSites, SCORING } from "@/lib/scoring";
 import { FiltersBar } from "@/components/FiltersBar";
 import { GhatPriorityTable } from "@/components/GhatPriorityTable";
 import { BriefSelectionProvider } from "@/components/BriefSelection";
-import { PhaseLegend } from "@/components/CoverageIndicator";
 import { ParameterView } from "@/components/ParameterView";
+import { RankingSummary } from "@/components/RankingSummary";
+import { buildBriefFacts } from "@/lib/brief-facts";
+import { rankingFallback } from "@/lib/ranking-summary";
+import { providerFromEnv } from "@/lib/ai";
 
 type SP = Promise<Record<string, string | string[] | undefined>>;
 
@@ -21,29 +24,31 @@ export default async function RankingPage({ searchParams }: { searchParams: SP }
   const scopeQuery = filtersToQuery({ year: f.year, festival: f.festival, phase: f.phase });
   const cc = manifest.crossCheck;
   const absentAll = manifest.absentWindows.length;
+  const summaryIds = ranked.slice(0, 3).map((site) => site.id);
+  const summaryFacts = scoped.length ? buildBriefFacts(summaryIds, f) : null;
 
   return (
     <div className="mx-auto max-w-[1400px] px-4 sm:px-6">
       <header className="border-b keyline pb-6 pt-10">
-        <p className="eyebrow">Full ranking · all sites · filterable</p>
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight">Historical concern, every reason, every source row</h1>
+        <h1 className="text-3xl font-semibold">Which ghats need attention?</h1>
         <p className="mt-3 max-w-[80ch] text-sm leading-relaxed text-fog-300">
-          {manifest.primaryRowCount.toLocaleString("en-IN")} MPPCB readings, {manifest.dataYearMin}–{manifest.dataYearMax}. DO below 5 mg/l in{" "}
-          <span className="num">{cc.doBelow5}/{cc.doNumeric}</span> numeric readings; BOD above 3 mg/l in <span className="num">{cc.bodAbove3}/{cc.bodNumeric}</span>;{" "}
-          <span className="num">{absentAll}</span> festival tables missing from the reports. Units assumed (reports print none).{" "}
-          <Link href="/" className="underline hover:text-fog-100">
-            Back to the plan
-          </Link>
+          Past water tests show where to look more closely. Current water quality and site status are unverified.
         </p>
+        <Link href="/" className="mt-3 inline-block text-sm text-tide-300">Back to the plan</Link>
       </header>
+
+      {summaryFacts?.ok && <RankingSummary key={scopeQuery} siteIds={summaryIds} filters={f} fallback={rankingFallback(summaryFacts.facts)} aiAvailable={providerFromEnv().configured} />}
 
       {/* filters */}
       <section id="ranking" aria-labelledby="rank-h" className="scroll-mt-28">
-        <div className="glass sticky top-[52px] z-20 mt-6 rounded-none border-x-0 px-4 py-3 sm:px-5" data-noprint>
+        <details className="mt-5 border-b keyline pb-4" open={f.year !== "all" || f.festival !== "all" || f.phase !== "all" || f.parameter !== "all"} data-noprint>
+          <summary className="text-sm text-tide-300">Filter by year, festival or test</summary>
+          <div className="mt-3">
           <Suspense fallback={<div className="h-14" />}>
             <FiltersBar basePath="/ranking" />
           </Suspense>
-        </div>
+          </div>
+        </details>
 
         {!parsed.ok && (
           <div role="alert" className="mt-4 rounded-xl border border-crit-400/40 bg-crit-400/10 px-4 py-3 text-sm text-crit-300">
@@ -57,15 +62,12 @@ export default async function RankingPage({ searchParams }: { searchParams: SP }
         <div className="mt-8 flex flex-wrap items-end justify-between gap-4">
           <div>
             <h2 id="rank-h" className="font-display text-2xl font-semibold tracking-tight">
-              Historical concern ranking
+              Ghats to review
             </h2>
             <p className="mt-1 max-w-[80ch] text-sm text-fog-500">
-              Scope: <span className="text-fog-300">{describeScope(f)}</span> · <span className="num">{scoped.length}</span> source rows in scope · scored on DO, BOD and
-              pH only, recency weights {Object.entries(SCORING.yearWeights).map(([y, w]) => `${y}×${w}`).join(", ")}. Historical concern and sampling priority are
-              computed separately. Nothing here says a site is safe, approved or open in 2026.
+              {describeScope(f)}. Order reflects past concern; sampling priority also considers missing evidence.
             </p>
           </div>
-          <PhaseLegend />
         </div>
 
         {scoped.length === 0 ? (
@@ -79,7 +81,7 @@ export default async function RankingPage({ searchParams }: { searchParams: SP }
         ) : (
           <div className="mt-6">
             <BriefSelectionProvider names={Object.fromEntries(ranked.map((s) => [s.id, s.canonicalName.split(" (")[0]!.split(" /")[0]!]))} scopeQuery={scopeQuery}>
-              <GhatPriorityTable summaries={ranked} scopeQuery={scopeQuery} />
+              <GhatPriorityTable summaries={ranked} scopeQuery={scopeQuery} compact />
             </BriefSelectionProvider>
           </div>
         )}
@@ -90,6 +92,15 @@ export default async function RankingPage({ searchParams }: { searchParams: SP }
           </div>
         )}
       </section>
+      <details className="my-8 border-t keyline pt-4 text-sm text-fog-500">
+        <summary>Data and ranking method</summary>
+        <p className="mt-3 max-w-[80ch] leading-relaxed">
+          {manifest.primaryRowCount.toLocaleString("en-IN")} MPPCB readings, {manifest.dataYearMin}–{manifest.dataYearMax}. DO below 5 mg/l in {cc.doBelow5}/{cc.doNumeric} numeric readings;
+          BOD above 3 mg/l in {cc.bodAbove3}/{cc.bodNumeric}; {absentAll} festival tables missing. Units assumed.
+          Scoring uses DO, BOD and pH only, with year weights {Object.entries(SCORING.yearWeights).map(([year, weight]) => `${year}×${weight}`).join(", ")}.
+        </p>
+        <Link href="/methodology" className="mt-2 inline-block text-tide-300">Full methodology and limitations</Link>
+      </details>
     </div>
   );
 }

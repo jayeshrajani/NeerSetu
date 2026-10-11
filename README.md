@@ -41,12 +41,12 @@ AI_MODEL=<model id from your account>
 ANTHROPIC_API_KEY=...        # or CEREBRAS_API_KEY=...
 ```
 
-Keys stay on the server. The model may only rewrite the brief's purpose sentence and action wording; all numbers and citations remain deterministic, and its output is rejected (template used instead) if it adds numbers, unknown IDs, or safety/causal/legal/health claims. **Not yet tested against a live provider** — no keys were available during the build.
+Keys stay on the server. The model may only rewrite purpose and action wording, including the short ranking summary; scoring, numbers and citations remain deterministic. Output is rejected if it adds unsupported numbers, unknown IDs, or safety/causal/legal/health claims. The ranking summary has been verified with live Cerebras calls using `qwen-3.8-27b`. If local Node HTTPS calls fail on certificate trust, use a recent Node version with `NODE_OPTIONS=--use-system-ca`; do not disable TLS verification.
 
 ## What works
 
 - **Plan (`/`)** — opens on India (React Three Fiber, Natural Earth India-POV outline) with today's IST date and the countdown to the next configured visarjan. **Test the waters** flies the camera into Bhopal's lakes (OpenStreetMap polygons). Left: interactive 3D map — one column per ghat, height = concern index, colour = band, pulse = urgent re-test; every marker states how it was placed (OSM-named feature / locality / lake only / name match only). Right: the highest-risk ghats this festival (all seven assumed in use; comparative reasons with page citations), then the dated plan (pre-immersion baseline → request missing tables → inspect → during → one-week-after), ranked ghats on the **upcoming festival's past seasons**, and per-ghat findings with report-page links. `?asOf=YYYY-MM-DD` rehearses another date; `?view=map&site=<id>` deep-links. 2D SVG fallback without WebGL.
-- **Ranking (`/ranking`)** — the full evidence table: concern, evidence-linked reasons, coverage bars and phase grid, sampling priority, identity flag; year / festival / phase filters in the URL; parameter view for unscored parameters. Pick up to 3 ghats for a brief.
+- **Ranking (`/ranking`)** — a short English/Hindi summary of the leading ghats, followed by plain-language reasons and next steps. AI rewrites only the short explanation; next steps remain source-based. AI wording is requested once per scope when configured; source-based wording stays visible if it fails. Source readings, coverage and methodology are expandable; year / festival / phase filters remain in the URL. Pick up to 3 ghats for a brief.
 - **Ghat detail (`/ghats/[id]`)** — printed names by festival, identity caveat, score breakdown with the formula filled in, all reasons with citations, phase coverage grid, DO/BOD/pH charts with one line per festival-year and gaps left as gaps, and a filterable table of every source row with citation (CSV line, printed value, report, verified PDF page, copy button).
 - **Officer brief (`/brief`)** — deterministic English + Hindi drafts: purpose, cited evidence, unknowns, proposed actions for review, sources. Copy English / Hindi / both, Print / Save PDF (print stylesheet), unticked "Reviewed by officer" box. Works with no API key.
 - **Methodology (`/methodology`)** — criteria table, formulas, missing-data rules, coverage, priority, page verification, limits.
@@ -66,7 +66,7 @@ Keys stay on the server. The model may only rewrite the brief's purpose sentence
 - The concern index and the urgent/priority triggers are **disclosed heuristics**, not CPCB/MPPCB policy.
 - The statewide file (21,600 rows) is profiled but **not used**.
 - Hindi brief text is a team translation — **needs native-speaker review**.
-- AI adapters are implemented and unit-tested with mocks but **not verified against a real Anthropic/Cerebras account**.
+- AI adapters are unit-tested with mocks; ranking-summary wording has also been verified with a live Cerebras account. Anthropic live verification remains outstanding.
 - No accounts, no database, no live government connection.
 
 ## How it works
